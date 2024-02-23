@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 18px;
+            text-align: center;
+            font-family: Arial, sans-serif;
+            background: url('https://rare-gallery.com/uploads/posts/101904-husqvarna-vitpilen-701-2018-bikes-4k.jpg') center center fixed;
+            background-size:contain;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            padding: 0;
+            background-position: center top;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-size: 100% auto;
+            text-decoration: none;
+        }
+
+        #fixed-header {
+            top: 0;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            padding: 10px 0;
+            background-color: #333;
+            color: #fff;
+            z-index: 100;
+        }
+
+        header a {
+            background-color: #333;
+            color: #e7ba19; 
+            font-family: Arial, sans-serif;
+            text-align: center;
+            font-size: 18px;
+            text-decoration: none;
+        }
+
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+        }
+
+        nav ul {
+            list-style: none;
+            padding: 0;
+            text-align: center;
+        }
+
+        nav ul li {
+            display: inline;
+            margin-right: 15px;
+        }
+
+        main {
+            flex-grow: 1;
+            padding: 20px;
+            text-align: justify;
+        }
+
+        h2 {
+            font-size: 34px; 
+            text-align: center;
+            font-family: Arial, sans-serif;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); 
+            margin: 10px; 
+            text-decoration: none;
+        } 
+
+        p{
+            font-family: sans-serif;
+            color: #fdfbfb;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .login-button {
+            position: fixed;
+            top: 10px;
+            right: 10px; 
+            background-color: #333;
+            color: #fff;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 3px;
+            font-weight: bold;
+        }
+        
+        .login-button:hover {
+            background-color: #3e3f3f;
+        }
+
+    </style>
+</head>
+<body>
+    <header id="fixed-header">
+        <h1>UGA Motorbikes</h1>
+        <nav>
+            <ul>
+                <li><a href="{% url 'dashboard' %}">Home</a></li>
+                <li><a href="{% url 'products' %}">Products</a></li>
+                <li><a href="{% url 'aboutus' %}">About Us</a></li>
+                <li><a href="{% url 'contact' %}">Contact</a></li>
+            </ul>
+        </nav>
+        {% if user.is_authenticated %}
+            <a href="{% url 'logout_view' %}" class="login-button">Logout</a>
+        {% else %}
+            <a href="{% url 'login_view' %}" class="login-button">Login</a>
+        {% endif %}
+    </header>
+    <main>
+        <h2  font-size: 34px;>ABOUT US</h2>
+        <p>Welcome to UGA Motorbikes! We are your premier destination for high-performance motorcycles that cater to all riders.</p>
+
+        <p>Our commitment is to provide a diverse selection of motorcycles, from sleek sport bikes for adrenaline junkies to rugged cruisers for those who enjoy the open road. We believe in the freedom and thrill of riding, and we are dedicated to offering top-quality motorcycles that deliver an exceptional riding experience.</p>
+
+        <p>At UGA Motorbikes, customer satisfaction is our priority. Our team is passionate about motorcycles and is ready to assist you in finding the perfect ride that matches your style and preferences.</p>
+
+        <p>Whether you're a seasoned rider or a beginner, we have a motorcycle for you. Explore our collection and embark on your next two-wheeled adventure with UGA Motorbikes!</p>
+    </main>
+
+    <footer>
+        <p>&copy; 2023 UGA Motorbikes. All rights reserved.</p>
+    </footer>
+
+</body>
+</html>

@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Staff</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #0a0a0a;
+        }
+
+        #fixed-header {
+            top: 0;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            padding: 10px 0;
+            background-color: #333;
+             
+            color: #fff;
+            
+            z-index: 100;
+            
+        }
+
+        #fixed-header h1 {
+            margin: 0;
+        }
+
+        header a {
+            background-color: #333;
+            color: #e7ba19;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            font-size: 18px;
+        }
+
+        nav ul {
+            list-style: none;
+            padding: 0;
+            text-align: center;
+        }
+
+        nav ul li {
+            display: inline;
+        }
+
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+        }
+
+        main {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            padding: 20px;
+        }
+
+        .staff1 {
+            position: relative;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 300px;
+            height: 300px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .pin-icon {
+            width: 50px;
+            height: auto;
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .staff1 h2 {
+            color: #333;
+            font-family: 'Roboto Condensed', sans-serif;
+            font-size: 26px;
+            margin-bottom: 10px;
+        }
+
+
+        a {
+            font-family: Arial, sans-serif;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            margin: 10px;
+            text-decoration: none;
+            text-align: center;
+        }
+
+        h1 {
+            font-family: Arial, sans-serif;
+            color: #d3d3d3;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            margin: 10px;
+            text-decoration: none;
+            text-align: center;
+        }
+
+        .staff1 p {
+            font-family: 'Roboto Condensed', sans-serif;
+            margin: 5px 0;
+            font-size: 17px;
+            color: #666;
+        }
+
+        .staff1 img {
+            width: 100%;
+            height: 200px;
+            object-fit: contain;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+
+        .staff1 h3 {
+            font-family: 'Roboto Condensed', sans-serif;
+            margin: 5px 0;
+            font-size: 22px;
+            color: #d3d3d3;
+        }
+
+        .staff1 h4 {
+            font-family: 'Roboto Condensed', sans-serif;
+            margin: 5px 0;
+            font-size: 17px;
+            color: #666;
+        }
+
+        .search-form {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 20px;
+            position: absolute;
+            margin-top: 120px;
+            top: 10px;
+            right: 10px;
+            z-index: 101;
+            display: flex;
+            align-items: center;
+        }
+
+        input {
+            margin-right: 10px;
+            padding: 8px;
+            font-size: 16px;
+        }
+
+        button {
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: flex_start;
+            align-items: center;
+            margin-bottom: 20px;
+            width: 100%;
+        }
+
+        .add-btn {
+            background-color: #fff;
+            color: black;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-right: 1000px; 
+        }
+
+        .deletestaff-link,
+        .editstaff-link {
+            position: absolute;
+            top: 10px;
+            color: rgb(231, 229, 229);
+            text-decoration: none;
+            font-size: 20px;
+        }
+
+        .deletestaff-link {
+            right: 10px;
+        }
+
+        .editstaff-link {
+            right: 30px;
+        }
+
+        .staff1 .editstaff-link,
+        .staff1 .deletestaff-link {
+            display: none;
+        }
+
+        .staff1:hover .editstaff-link,
+        .staff1:hover .deletestaff-link {
+            display: block;
+        }
+        
+        .login-button {
+            position: fixed;
+            top: 10px; 
+            right: 10px; 
+            background-color: #333;
+            color: #fff;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 3px;
+            font-weight: bold;
+        }
+        
+        .login-button:hover {
+            background-color: #3e3f3f;
+        }
+        
+    </style>
+    <script>
+        function confirmDelete(selectedUsername) {
+            var loggedInUsername = "{{ user }}";
+            
+            if (selectedUsername === loggedInUsername) {
+                return confirm("You will be logged out if you delete the currently logged-in user. Are you sure you want to proceed?");
+            } else {
+                return confirm("Are you sure you want to delete " + selectedUsername + "?");
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <header id="fixed-header">
+        <h1>UGA Motorbikes</h1>
+        <nav>
+            <ul>
+                <li><a href="{% url 'dashboard' %}">Home</a></li>
+                <li><a href="{% url 'products' %}">Products</a></li>
+                <li><a href="{% url 'aboutus' %}">About Us</a></li>
+                <li><a href="{% url 'contact' %}">Contact</a></li>
+            </ul>
+        </nav>
+        {% if user.is_authenticated %}
+            <a href="{% url 'logout_view' %}" class="login-button">Logout</a>
+        {% else %}
+            <a href="{% url 'login_view' %}" class="login-button">Login</a>
+        {% endif %}
+    </header>
+
+    <h1> STAFF </h1>
+
+    <form class="search-form" method="post" action="{% url 'staff' %}">
+        {% csrf_token %}
+        <input type="text" name="search" placeholder="Enter search term">
+        <button type="button">Search</button>
+    </form>
+    {% if user.is_authenticated %}
+        <div class="button-container">
+            <a href="{% url 'registration' %}" class="add-btn" type="button" id="addCustomerBtn">Add New Employee</a>
+        </div>
+    {% endif %}
+    <main>
+        {% if user.is_authenticated %}
+            {% for s in staff %}
+                <div class="staff1">
+                    <a href="{% url 'edit_staff' s.STAFF_ID %}" class="editstaff-link">&#9998;</a>
+                    <a href="{% url 'delete_staff' s.STAFF_ID %}" class="deletestaff-link"
+                        onclick="return confirmDelete('{{ s.USER_NAME }}');">&#x1F5D1;</a>
+                    <div class="imagecontainer1">
+                        <image src="{{ s.IMAGE_URL }}" alt=""></image>
+                    </div>
+                    <h3>{{ s.FIRST_NAME }} {{ s.LAST_NAME }}</h3>
+                    <h4>{{ s.PHONE }}</h4>
+                    <h4>{{ s.EMAIL }}</h4>
+                </div>
+            {% endfor %}
+        {% else %}
+            <h1>You need to be logged in to view Staff details.</h1>
+        {% endif %}
+    </main>
+</body>
+
+</html>

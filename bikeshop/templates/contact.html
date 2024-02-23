@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: url('https://wallpapers.com/images/featured/4k-bike-p5ztqfie3vnj5kkp.jpg') center center fixed;
+            background-size:contain;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            padding: 0;
+            background-position: center top;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-size: 100% auto;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        #fixed-header {
+            top: 0;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            padding: 10px 0;
+            background-color: #333; 
+            color: #fff;
+            z-index: 100;
+        }
+
+
+        header a {
+            background-color: #333;
+            color: #e7ba19; 
+            font-family: Arial, sans-serif;
+            text-align: center;
+            font-size: 18px;
+            text-decoration: none;
+        }
+
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+        }
+
+        nav ul {
+            list-style: none;
+            padding: 0;
+            text-align: center;
+        }
+
+        nav ul li {
+            display: inline;
+            margin-right: 15px;
+        }
+
+        main {
+            flex-grow: 1;
+            padding: 20px;
+            text-align: center;
+        }
+
+        h2 {
+            font-size: 32px; 
+            text-align: center;
+            font-family: Arial, sans-serif;
+            color: #fff;
+            margin: 10px; 
+            text-decoration: none;
+        } 
+
+        address {
+            font-style: normal;
+            margin-bottom: 16px;
+            color: #fff;
+        }
+
+        p {
+
+            color: #fff;
+            margin-bottom: 16px;
+        }
+
+        .login-button {
+            position: fixed;
+            top: 10px; 
+            right: 10px; 
+            background-color: #333;
+            color: #fff;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 3px;
+            font-weight: bold;
+        }
+        
+        .login-button:hover {
+            background-color: #3e3f3f;
+        }
+
+    </style>
+</head>
+<body>
+
+    <header id="fixed-header">
+        <h1>UGA Motorbikes</h1>
+        <nav>
+            <ul>
+                <li><a href="{% url 'dashboard' %}">Home</a></li>
+                <li><a href="{% url 'products' %}">Products</a></li>
+                <li><a href="{% url 'aboutus' %}">About Us</a></li>
+                <li><a href="{% url 'contact' %}">Contact</a></li>
+            </ul>
+        </nav>
+        {% if user.is_authenticated %}
+            <a href="{% url 'logout_view' %}" class="login-button">Logout</a>
+        {% else %}
+            <a href="{% url 'login_view' %}" class="login-button">Login</a>
+        {% endif %}
+    </header>
+
+    <main>
+
+        <h2>CONTACT US</h2>
+
+        <address>
+            123 Main Street<br>
+            Athens, GA 30605<br>
+            Country
+        </address>
+
+        <p>Email: athensbikestore@example.com</p>
+        <p>Phone: +1 (123) 456-7890</p>
+    </main>
+
+        </main>
+
+        <footer>
+            <p>&copy; 2023 UGA Motorbikes. All rights reserved.</p>
+        </footer>
+
+</body>
+</html>

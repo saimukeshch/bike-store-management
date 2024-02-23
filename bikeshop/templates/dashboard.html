@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+            body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-image: url('https://kickstart.bikeexif.com/wp-content/uploads/2014/11/husqvarna-motorcycle-concept.jpg');
+        background-size: cover; 
+        background-position: center top;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-size: 100% auto;
+        filter: brightness(110%) contrast(120%) saturate(120%);
+        color: #fff;
+        font-family: Arial, sans-serif;
+        font-size: 18px;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+        }
+
+        #fixed-header {
+            top: 0;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            padding: 10px 0;
+            background-color: #333; 
+            color: #fff; 
+            z-index: 100; 
+        }
+
+        #fixed-header h1 {
+            margin: 0;
+        }
+
+
+        .login-button {
+            position: fixed;
+            top: 50px; 
+            right: 10px; 
+            background-color: #333;
+            color: #fff;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 3px;
+            font-weight: bold;
+        }
+
+        .login-button:hover {
+            background-color: #3e3f3f;
+        }
+
+        h1, h2, h3, p {
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); 
+            margin: 10px;
+        }
+        a {
+            color: #e7ba19; 
+            text-decoration: none; 
+        }
+
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+        }
+
+        nav ul {
+            list-style: none;
+            padding: 0;
+            text-align: center;
+        }
+
+        nav ul li {
+            display: inline;
+            margin-right: 20px;
+        }
+
+        section {
+            padding: 20px;
+            text-align: center;
+            background-color: rgba(104, 100, 100, 0.7).7;
+        }
+
+        section h2 {
+            margin-bottom: 20px;
+        }
+
+        section p {
+            color: #b7afaf;
+            margin-bottom: 20px;
+        }
+
+        section .btn {
+            padding: 10px 20px;
+            text-decoration: none;
+            background-color: #333;
+            color: #fff;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        section .btn:hover {
+            background-color: #555;
+        }
+
+        .search-box {
+        position: fixed;
+        top: 10px;
+        right: 10px;
+        z-index: 101; 
+        }
+        
+        .search-box input {
+        width: 200px;
+        padding: 5px;
+        }
+
+        main {
+            flex-grow: 1;
+            padding: 20px;
+            text-align: center;
+        }
+
+
+    </style>
+</head>
+
+<body>
+    <header id="fixed-header">
+        <h1>UGA Motorbikes</h1>
+        <nav>
+            <ul>
+                <li><a href="{% url 'dashboard' %}">Home</a></li>
+                <li><a href="{% url 'products' %}">Products</a></li>
+                <li><a href="{% url 'aboutus' %}">About Us</a></li>
+                <li><a href="{% url 'contact' %}">Contact</a></li>
+            </ul>
+        </nav>
+        {% if user.is_authenticated %}
+
+            <a href="{% url 'logout_view' %}" class="login-button">Logout</a>
+            <p style="position: absolute;top: 20px;right: 20px;">Hi, {{ user }}</p>
+        {% else %}
+            <a href="{% url 'login_view' %}" class="login-button">Login</a>
+        {% endif %}
+    </header>
+
+<main>
+    <section id="hero">
+        <h2>Welcome to Athens Store</h2>
+        <p>Discover the perfect ride for your adventures.</p>
+        <a href="products" class="btn">Explore Bikes</a>
+    </section>
+
+    <section id="customers">
+        <h2>Our Valued Customers</h2>
+        <p>We are proud to serve a diverse community of bikers. Learn more about our loyal customers and their experiences.</p>
+        <a href="customers" class="btn">Meet our customers</a>
+    </section>
+    
+    <section id="stock">
+        <h2>Stock Availability</h2>
+        <p>Check the availability of our bike stock and find the perfect model for your needs. Get the latest updates on our inventory.</p>
+        <a href="stocks" class="btn">View Stock</a>
+    </section>
+
+    <section id="orders">
+        <h2>Recent Orders</h2>
+        <p>See the latest orders placed by our customers and track your own order if you've made a purchase with us.</p>
+        <a href="orders" class="btn">View Orders</a>
+    </section>
+
+    <section id="staff">
+        <h2>Meet Our Team</h2>
+        <p>Get to know the dedicated staff members who are here to assist you in finding the perfect bike and providing exceptional service.</p>
+        <a href="staff" class="btn">Meet the Team</a>
+    </section>
+
+    <section id="stores">
+        <h2>Our Store Locations</h2>
+        <p>Discover our store locations and find the one nearest to you. Visit us in person to explore our offerings.</p>
+        <a href="stores" class="btn">Find a Store</a>
+    </section>
+</main>
+
+    <footer>
+        <p style="text-align: center;">&copy; 2023 UGA Motorbikes. All rights reserved.</p>
+    </footer>
+</body>
+</html>

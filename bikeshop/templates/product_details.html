@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Product</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: url('https://i.pinimg.com/originals/ce/48/82/ce4882c6b2294a52c3ddc4482cb9a721.png') center center fixed;
+            background-size:contain;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            padding: 0;
+            background-position: center top;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-size: 100% auto;
+        }
+
+        #fixed-header {
+            top: 0;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            padding: 10px 0;
+            background-color: #333;  
+            color: #fff; 
+            z-index: 100; 
+        }
+
+        #fixed-header h1 {
+            margin: 0;
+        }
+
+        header a {
+            color: #e7ba19;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            font-size: 18px;
+            text-decoration: none;
+        }
+
+        nav ul {
+            list-style: none;
+            padding: 0;
+            text-align: center;
+        }
+
+        nav ul li {
+            display: inline;
+            margin-right: 10px; 
+        }
+
+        .reg-container {
+            border-radius: 5px;
+            text-align: center;
+            max-width: 500px; 
+            height: 800px;
+            width: 100%;
+            margin: auto; 
+            display: flex;
+            flex-direction: column;
+            justify-content: center; 
+            align-items: center; 
+        }
+
+        .form1 {
+        text-align: center;
+        }
+
+        input {
+            display: block;
+            margin: 10px 0;
+            color: #0d0d0c;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            font-size: 20px;
+            text-decoration: none;
+        }
+
+        label {
+            display: block;
+            margin: 10px 0;
+            color: #fbf9f9;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            font-size: 20px;
+            text-decoration: none;
+            border: #0d0d0c;
+            border-radius: 250px;
+        }
+
+
+        input[type="text"] {
+        width: 100%;
+        border: 1px solid #ddd;
+        border-radius: 3px;
+        }
+
+        input[type="number"]{
+        width: 100%;
+        border: 1px solid #ddd;
+        border-radius: 3px;
+        }
+
+        button {
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 3px;
+        padding: 10px 20px;
+        cursor: pointer;
+        }
+
+        .rtn-home a{
+            text-decoration: none;
+            text-align: center;
+            font-size: 20px;
+            font-family: Arial, sans-serif;
+
+        }
+
+        .reg-container h1{
+            color: #efeded;
+            text-align: center;
+            font-size: 30px;
+            text-decoration: none;
+            font-family: Arial, sans-serif;
+            text-shadow: 2px 2px 4px #0c0c0c;
+        }
+
+        .imagecontainer{
+            color: #fff;
+        }
+
+</style>
+</head>
+
+<body>
+    <header id="fixed-header">
+        <h1>UGA Motorbikes</h1>
+        <nav>
+            <ul>
+                <li><a href="{% url 'dashboard' %}">Home</a></li>
+                <li><a href="{% url 'products' %}">Products</a></li>
+                <li><a href="{% url 'aboutus' %}">About Us</a></li>
+                <li><a href="{% url 'contact' %}">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+    <div class="reg-container">
+            <div class="form1">
+                <h1 class="title">Product Details</h1>
+                    <form method="POST" action="{% url 'add_product' %}">
+                        {% csrf_token %}
+                        <input type="hidden" id="product_id" name="product_id" value="{% if product %}{{ product.PRODUCT_ID }}{% endif %}">
+
+                        <div class="input-field">
+                            <label for="product_name">Product name* </label> 
+                            <input type="text" id="product_name" name="product_name" required style="max-width: 100%;" value="{% if product %}{{ product.PRODUCT_NAME }}{% endif %}">
+                        </div>
+                        <div class="input-field">
+                            <label for="brand">Brand* </label>
+                            <select id="brand" name="brand" required style="width: 100%;">
+                                <option value="" >Select</option>
+                                {% for brand in distinct_brands %}
+                                    <option value="{{ brand }}" {% if product and brand == product.BRAND_NAME %}selected{% endif %}>{{ brand }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        
+                        <div class="input-field">
+                            <label for="category">Category* </label>
+                            <select id="category" name="category" required style="width: 100%;">
+                                <option value="" >Select</option>
+                                {% for category in distinct_categories %}
+                                    <option value="{{ category }}" {% if product and category == product.CATEGORY_NAME %}selected{% endif %}>{{ category }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="input-field">
+                            <label for="model_year">Model year* </label>
+                            <input type="number" id="model_year" name="model_year" required style="max-width: 100%;" value="{% if product %}{{ product.MODEL_YEAR }}{% endif %}">
+                        </div>
+                        <div class="input-field">
+                            <label for="price">Price* </label>
+                            <input type="number" id="price" name="price" required style="max-width: 100%;" value="{% if product %}{{ product.LIST_PRICE }}{% endif %}">
+                        </div>                      
+                        <div class="input-field">
+                            <label for="image_url">Image </label>
+                            <input type="text" id="image_url" required style="max-width: 100%;" name="image_url" value="{% if product %}{{ product.IMAGE_URL }}{% endif %}">
+                        </div>
+                        <button type="submit">Save</button>
+                    </form>
+                    <br>
+            </div>
+</body>
+</html>

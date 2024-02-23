@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stock Details</title>
+
+    <style>
+
+        #fixed-header {
+            top: 0;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            padding: 10px 0;
+            background-color: #333;
+             
+            color: #fff;
+            
+            z-index: 100;
+            
+        }
+
+        #fixed-header h1 {
+            margin: 0;
+        }
+
+
+         header a {
+            background-color: #333;
+            color: #e7ba19;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            font-size: 18px;
+        }
+
+        nav ul {
+            list-style: none;
+            padding: 0;
+            text-align: center;
+        }
+
+        nav ul li {
+            display: inline;
+        }
+
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+        }
+
+        a {
+            font-family: Arial, sans-serif;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            margin: 10px;
+            text-decoration: none;
+            text-align: center;
+        }
+
+        h1 {
+            font-family: Arial, sans-serif;
+            color: #d3d3d3;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            margin: 10px;
+            text-decoration: none;
+            text-align: center;
+        }
+
+        h2 {
+            font-family: Arial, sans-serif;
+            color: #f6f2f2;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            margin: 10px;
+            font-size: 25px;
+            text-decoration: none;
+            text-align: center;
+        }
+
+    body {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        margin: 0; 
+        margin: 0;
+        padding: 0;
+        background-image: url('https://www.protectiveagency.com/blog/wp-content/uploads/2018/04/Motorcycle-Sunset.jpg');
+        background-size: cover; 
+        background-position: center top;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-size: 100% auto;
+        filter: brightness(110%) contrast(120%) saturate(120%);
+ 
+    }
+
+
+        #div {
+            text-align: center;
+            margin-top: 20px; 
+        }
+
+        #div label {
+            font-family: Arial, sans-serif;
+            font-size: 20px;
+            color: #0b0b0b;
+            margin: 10px;
+            display: block;
+        }
+
+        #div select {
+            margin: 10px;
+            width: 100%;
+        }
+
+    #div input {
+        margin: 10px;
+        width: 100%;
+    }
+
+
+
+    </style>
+
+</head>
+<body>
+
+    <header id="fixed-header">
+        <h1>UGA Motorbikes</h1>
+        <nav>
+            <ul>
+                <li><a href="{% url 'dashboard' %}">Home</a></li>
+                <li><a href="{% url 'products' %}">Products</a></li>
+                <li><a href="{% url 'aboutus' %}">About Us</a></li>
+                <li><a href="{% url 'contact' %}">Contact</a></li>
+            </ul>
+        </nav>
+        
+    </header>
+<main>
+    <h2>{% if store_id and product_id %}Edit{% else %}Add{% endif %} Stock</h2>
+    
+    <form method="post" action="{% url 'add_stock' %}">
+        {% csrf_token %}
+        <input type="hidden" id="stock" name="stock" value="{% if stock %}{{ stock.STOCK_ID }}{% endif %}">    
+    <div id="div">
+
+    <div>    
+        <label for="store">Store</label>
+        <select name="store" id="store">
+            <option value="">Select</option>
+            {% for store in stores %}
+                <option value="{{ store.STORE_ID }}" {% if stock and store.STORE_ID == stock.STORE_ID %}selected{% endif %}>{{ store.STORE_NAME }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    
+    <div>
+        <label for="product">Product</label>
+        <select name="product" id="product">
+            <option value="">Select</option>
+            {% for product in products %}
+                <option value="{{ product.PRODUCT_ID }}" {% if stock and product.PRODUCT_ID == stock.PRODUCT_ID %}selected{% endif %}>{{ product.PRODUCT_NAME }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="input-field">
+        <label for="quantity">Quantity* </label>
+        <input type="number" id="quantity" name="quantity" required style="max-width: 100%;" value="{% if stock %}{{ stock.QUANTITY }}{% endif %}">
+    </div>
+    <button type="submit">Submit</button>
+
+    </form>
+</main>
+
+    <footer>
+        <p style="text-align: center; color: #d3d3d3;">&copy; 2023 UGA Motorbikes. All rights reserved.</p>
+    </footer>
+</body>
+</html>

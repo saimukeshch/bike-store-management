@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stock Availability</title>
+
+    <style>
+
+        #fixed-header {
+            top: 0;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            padding: 10px 0;
+            background-color: #333;  
+            color: #fff; 
+            z-index: 100; 
+        }
+
+        #fixed-header h1 {
+            margin: 0;
+        }
+
+        header a {
+            background-color: #333;
+            color: #e7ba19; 
+            font-family: Arial, sans-serif;
+            text-align: center;
+            font-size: 18px;
+        }
+
+        nav ul {
+            list-style: none;
+            padding: 0;
+            text-align: center;
+        }
+
+        nav ul li {
+            display: inline;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 12px;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9; 
+        }
+        tr:nth-child(odd) {
+            background-color: #ffffff;
+        }
+
+        h1, h2, a {
+            font-family: Arial, sans-serif;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); 
+            margin: 10px; 
+            text-decoration: none;
+            text-align: center;
+        }
+
+        .search-form {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 20px;
+            position: absolute;
+            margin-top: 120px;
+            top: 10px;
+            right: 10px;
+            z-index: 101; 
+        }
+
+        select, input {
+            margin-right: 10px;
+            padding: 8px;
+            font-size: 16px;
+        }
+
+        button {
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        
+        .login-button {
+            position: fixed;
+            top: 10px; 
+            right: 10px; 
+            background-color: #333;
+            color: #fff;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 3px;
+            font-weight: bold;
+        }
+        
+        .login-button:hover {
+            background-color: #3e3f3f;
+        }
+
+        .add-btn,
+        .delete-btn,
+        .edit-btn {
+            background-color: #606060;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+
+        .delete-btn, .edit-btn {
+            background-color: #606060;
+            display: none;
+        }
+
+    </style>
+
+</head>
+<body>
+    <header id="fixed-header">
+        <h1>UGA Motorbikes</h1>
+        <nav>
+            <ul>
+                <li><a href="{% url 'dashboard' %}">Home</a></li>
+                <li><a href="{% url 'products' %}">Products</a></li>
+                <li><a href="{% url 'aboutus' %}">About Us</a></li>
+                <li><a href="{% url 'contact' %}">Contact</a></li>
+            </ul>
+        </nav>
+        {% if user.is_authenticated %}
+            <a href="{% url 'logout_view' %}" class="login-button">Logout</a>
+        {% else %}
+            <a href="{% url 'login_view' %}" class="login-button">Login</a>
+        {% endif %}
+    </header>
+
+<h1 font-size: 34px;>STOCKS</h1>
+
+<form class="search-form" method="post" action="{% url 'stocks' %}">
+    {% csrf_token %}
+    <select id="filter" name="filter">
+        <option value="">Search by</option>
+        <option value="STORE_NAME">Store</option>
+        <option value="PRODUCT_NAME">Product</option>
+    </select>
+    <input type="text" name="search" placeholder="Enter search term">
+    <button type="submit">Search</button>
+</form>
+
+<div class="button-container">
+    {% if user.is_authenticated %}
+        <a href="{% url 'add_stock' %}" class="add-btn" type="button" id="addStockBtn">Add Stock</a>
+        <a href="#" class="edit-btn" type="button" id="editStockLink">Edit Stock</a>
+    {% endif %}
+</div>
+{% if user.is_authenticated %}
+    <form id="stockForm">
+        {% csrf_token %}
+        <input type="hidden" name="selected_stock_ids" id="selectedStockIds" value="">
+        <table>
+            <thead>
+                <tr>
+                    <th>
+                        <input type="checkbox" class="select-all-checkbox" id="selectAllCheckbox">
+                        <label for="selectAllCheckbox"></label>
+                    </th>
+                    <th>Store</th>
+                    <th>Product</th>
+                    <th>Quantity</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for stock in stocks %}
+                    <tr>
+                        <td><input type="checkbox" name="stock_ids[]" value="{{ stock.STOCK_ID }}"></td>
+
+                        <td>{% if stock.STORE_ID != None %}{{ stock.STORE_NAME }}{% else %}-{% endif %}</td>
+                        <td>{% if stock.PRODUCT_ID != None %}{{ stock.PRODUCT_NAME }}{% else %}-{% endif %}</td>
+                        <td>{% if stock.QUANTITY != None %}{{ stock.QUANTITY }}{% else %}-{% endif %}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </form>
+
+    <div class="pagination">
+        <span class="step-links">
+            {% if stocks.has_previous %}
+                <a href="?page=1">&laquo;</a>
+                <a href="?page={{ stocks.previous_page_number }}">&#9666;</a>
+            {% endif %}
+
+            <span class="current" style="display: inline-block; vertical-align: middle;">
+                Page <input type="number" name="page" id="page-input" value="{{ stocks.number }}" min="1" max="{{ stocks.paginator.num_pages }}" onkeydown="handleEnter(event)"> of {{ stocks.paginator.num_pages }}.
+            </span>
+
+            {% if stocks.has_next %}
+                <a href="?page={{ stocks.next_page_number }}">&#9656;</a>
+                <a href="?page={{ stocks.paginator.num_pages }}">&raquo;</a>
+            {% endif %}
+        </span>
+        <form method="get" action="{% url 'stocks' %}" style="display: inline;">
+            <select id="items_per_page_bottom" name="items_per_page" onchange="this.form.submit()">
+                <option value="10" {% if request.GET.items_per_page == '10' %}selected{% endif %}>10</option>
+                <option value="20" {% if request.GET.items_per_page == '20' %}selected{% endif %}>20</option>
+                <option value="50" {% if request.GET.items_per_page == '50' %}selected{% endif %}>50</option>
+            </select>
+            <label for="items_per_page_bottom">Per page</label>
+        </form>
+    </div>
+{% else %}
+    <h1>You need to be logged in to view Stocks</h1>
+{% endif %}
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var selectAllCheckbox = document.getElementById('selectAllCheckbox');
+        var checkboxes = document.getElementsByName('stock_ids[]');
+        var addStockBtn = document.getElementById('addStockBtn');
+        var editStockLink = document.getElementById('editStockLink');
+        var pageInput = document.getElementById('page-input');
+        pageInput.addEventListener('keydown', handleEnter);
+    
+        selectAllCheckbox.addEventListener('change', function() {
+            checkboxes.forEach(function(checkbox) {
+                checkbox.checked = selectAllCheckbox.checked;
+            });
+            updateButtonVisibility();
+        });
+        function handleEnter(event) {
+            if (event.key === 'Enter') {
+                var pageInput = document.getElementById('page-input');
+                var selectedPage = pageInput.value;
+        
+                var itemsPerPageSelect = document.getElementById('items_per_page');
+                var selectedItemsPerPage = itemsPerPageSelect ? itemsPerPageSelect : 10;
+        
+                console.log('selectedPage:', selectedPage);
+                console.log('selectedItemsPerPage:', selectedItemsPerPage);
+        
+                window.location.href = "?page=" + selectedPage + "&items_per_page=" + selectedItemsPerPage;
+                event.preventDefault();
+            }
+        }
+        checkboxes.forEach(function(checkbox) {
+            checkbox.addEventListener('change', updateButtonVisibility);
+        });
+    
+        function updateButtonVisibility() {
+            var selectedStockIds = Array.from(checkboxes)
+                .filter(function(checkbox) {
+                    return checkbox.checked;
+                })
+                .map(function(checkbox) {
+                    return checkbox.value;
+                });
+    
+                
+            document.getElementById('selectedStockIds').value = selectedStockIds.join(',');
+    
+            selectAllCheckbox.checked = checkboxes.length > 0 && checkboxes.length === selectedStockIds.length;
+    
+            addStockBtn.style.display = selectedStockIds.length > 0 ? 'none' : 'inline-block';
+    
+            editStockLink.style.display = selectedStockIds.length === 1 ? 'inline-block' : 'none';
+    
+            if (selectedStockIds.length === 1) {
+                var editStockUrl = '{% url "edit_stock" 0 %}'.replace('0', selectedStockIds);
+                editStockLink.setAttribute('href', editStockUrl);
+            } else {
+                editStockLink.removeAttribute('href');
+            }
+        }
+    });    
+</script>
+</body>
+</html>
